@@ -1,0 +1,71 @@
+% qdichokey.sty
+% 20171213
+
+\ProvidesPackage{qdichokey}[2017/12/13 package qdichokey]
+\RequirePackage{calc}
+\RequirePackage{ifthen}
+
+\makeatletter
+
+\def\@get@array#1#2{\csname array@#1@#2\endcsname}
+\def\@set@array#1#2#3{\expandafter\xdef\csname array@#1@#2\endcsname{#3}}
+\def\q@dotline#1{\leavevmode \cleaders \hb@xt@ .3em{\hss .\hss }\hskip #1\kern \z@}
+\def\dotfillbreakable{\q@dotline{0pt plus 1fil}\penalty150\hbox{}\penalty10000\q@dotline{12pt plus1fill}}
+
+\newcounter{dep}
+\newcounter{cpcnt}
+\newboolean{named}
+\newsavebox{\gprefix}
+
+\newlength{\oldparindent}
+\newlength{\altindent}\setlength{\altindent}{3mm}
+\newlength{\taxonskip}\setlength{\taxonskip}{5mm}
+\newlength{\cssep}\setlength{\cssep}{1.8mm}
+\newlength{\headlen}
+
+\def\hang{\hangindent\parindent}
+\def\science#1{{\bfseries\itshape #1}}
+\def\escape#1{{\mdseries\upshape #1}}
+\def\var{\escape{var.\ }}
+\def\subsp{\escape{subsp.\ }}
+\def\@ifnotempty#1{\if\relax#1\relax\else}
+
+\newenvironment{Key*}[1]%
+	{\sbox{\gprefix}{\science{#1}}%
+	\setcounter{dep}{0}%
+	\setcounter{cpcnt}{0}%
+	\setboolean{named}{false}%
+	\setlength{\oldparindent}{\parindent}}%
+	{\par\setlength{\parindent}{\oldparindent}}
+	
+\newcommand\taxname[2]{\hbox{\kern0.2em\@ifnotempty{#1}\textbf{#1}\hspace*{\cssep}\fi%
+	\usebox{\gprefix}\science{\mbox{#2}}}\hspace*{-\taxonskip}}
+	
+\newcommand{\commentname}[3]%
+	{\setboolean{named}{true}%
+	\@ifnotempty{#1}\begingroup\scriptsize\itshape 〔#1〕\endgroup\fi%
+	\dotfillbreakable%
+	\taxname{#2}{#3}%
+	{\parfillskip=0pt\par}}
+\newcommand\cname[2]{\commentname{}{#1}{#2}}
+\newcommand\name[1]{\commentname{}{}{#1}}
+\newcommand\synonym[2]{\par\hfil = \taxname{#1}{#2}{\parfillskip=0pt\par}}
+
+\newcommand\alter%
+	{\par\rightskip\taxonskip%
+	% \tolerance2000%
+	\ifthenelse{\boolean{named}}%
+		{\whiledo{\equal{0}{\@get@array{cpbin}{\thedep}}}{\addtocounter{dep}{-1}}%
+		\xdef\cpnow{\@get@array{cpbin}{\thedep}}%
+		\@set@array{cpbin}{\thedep}{0}}%
+		{\stepcounter{cpcnt}%
+		\stepcounter{dep}%
+		\@set@array{cpbin}{\thedep}{\thecpcnt}%
+		\xdef\cpnow{\thecpcnt}}%
+	\setboolean{named}{false}%
+	\def\@cphead{\cpnow.\kern2mm}%
+	\setlength{\parindent}{\thedep\altindent-\altindent+\widthof{\@cphead}}%
+	\hang\leavevmode\llap{\@cphead}}
+	% THIS IS NOT COMPATIBLE WITH adjustwidth ENVIRONMENT IN changepage PACKAGE
+	
+\makeatother
