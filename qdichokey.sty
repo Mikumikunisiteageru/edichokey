@@ -1,6 +1,8 @@
 % qdichokey.sty
 % 20171213
-
+% 20171214 \sp \cf
+% Author: Yuchang Yang
+%  Email: deegir@126.com
 \ProvidesPackage{qdichokey}[2017/12/13 package qdichokey]
 \RequirePackage{calc}
 \RequirePackage{ifthen}
@@ -28,6 +30,8 @@
 \def\escape#1{{\mdseries\upshape #1}}
 \def\var{\escape{var.\ }}
 \def\subsp{\escape{subsp.\ }}
+\def\sp{\escape{sp.\ }}
+\def\cf{\escape{cf.\ }}
 \def\@ifnotempty#1{\if\relax#1\relax\else}
 
 \newenvironment{Key*}[1]%
