@@ -1,41 +1,30 @@
-[//]: # (qdichokey/readme.md)
+[//]: # (edichokey/readme.md)
+[//]: # (2020.7.14)
 
-# qdichokey
+# edichokey
 
 ## Introduction
 
-This is a LaTeX package for TeXnical taxonomists to make dichotomous identification keys.
+This is a LaTeX package for typesetting dichotomous identification keys. It can be considered as an extended version of `dichokey`.
 
 ## Usage
 
-The usage is similar to the package `dichokey`, except for the asterisked name of environment `Key*`.
+The usage is almost the same as the package `dichokey`.
 
 ~~~latex
-\begin{Key*}{A.~} % Acronym for an anonymous genus
-\alter Leaves large \name{macrophyllum}
+\begin{Key}[P.]
+\alter Leaves large \name{macrophyllus}
 \alter Leaves small.
-	\alter Flowers large.
-		\alter Capsules large \name{macrospermum}
-		\alter Capsules small \name{microspermum}
-	\alter Flowers small \name{microflorum}
-\end{Key*}
+  \alter Flower solitary.
+    \alter Fruits white \name{leucocarpus}
+    \alter Fruits black \name{melanocarpus}
+  \alter Flowers many \name{pleianthus}
+\end{Key}
 ~~~
 
 ## Improvements
 
-* Rewrite core algorithm for large keys with more than 31 terminal taxa
-* Make dot lines line-breakable
+* Rewrite core algorithm for complex keys
+* Enable dot lines to wrap
 * Shift all taxa keyed out right uniformly
  
-## Update History
-
-- 2017.12.13: ver. 2, released on Github
-
-## Caution
-
-Incompatible with the `adjustwidth` environment in package `changepage`, since the `\parshape` command is reloaded.
-
-## 一些有的没的
-
-原来想着 `dichokey` 宏包改改用，但在排 *Flora of China* 的葱属分种检索表时炸了，原因是该宏包用一个计数器的二进制位来储存分枝序号对的状态，因而检索表规模受到整型字长的限制，最多只能有 30 对分枝，换言之最多 31 个分类阶元。于是重写一个。
-
