@@ -19,15 +19,20 @@
 %   - the example files: [edichokey-ex.tex, edichokey-ex.pdf].
 %%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{edichokey}[2020/07/14 v2.00 package edichokey]
+\ProvidesPackage{edichokey}[2020/08/31 v2.01y package edichokey]
 \makeatletter
 \def\edk@get@array#1{\csname edk@array@#1\endcsname}
 \def\edk@set@array#1#2{\expandafter\xdef\csname edk@array@#1\endcsname{#2}}
 \newif\if@edk@named@
+\newif\if@edk@hyperref@\@edk@hyperref@false
+\DeclareOption{hyperref}{\@edk@hyperref@true}
+\ProcessOptions
+\RequirePackage{hyperref}
 \newdimen\alterindent\alterindent1.2em
 \newdimen\taxonrightskip\taxonrightskip2em
 \newdimen\edk@leftskip
 \newbox\edk@header
+\newcount\edk@key
 \newcount\edk@depth
 \newcount\edk@couplet
 \def\edknamestyle{\bfseries\itshape}
@@ -50,8 +55,12 @@
 \def\dot@line{%
   \unskip\dot@fill{0pt plus 1fil}\penalty150%
   \null\nobreak\dot@fill{12pt plus 1fill}}
-\newenvironment{Key}
-  {\edk@depth\z@
+\newenvironment{Key}{%
+  \global\advance\edk@key\@ne
+  \if@edk@hyperref@
+	\hypersetup{hidelinks=true}%
+  \fi
+  \edk@depth\z@
   \edk@couplet\z@
   \parindent\z@
   \advance\rightskip\taxonrightskip
@@ -82,8 +91,17 @@
     \xdef\edk@number{\the\edk@couplet}%
     \edk@set@array{\the\edk@depth}{\the\edk@couplet}%
   \fi
+  \if@edk@hyperref@
+    \def\edk@hyp@prefix{edichokey:\the\edk@key:\edk@number:}
+    \edef\edk@hyp@this{\edk@hyp@prefix\if@edk@named@ b\else a\fi}%
+    \edef\edk@hyp@that{\edk@hyp@prefix\if@edk@named@ a\else b\fi}%
+	\def\edk@hyp@make##1{%
+      \phantomsection\label{\edk@hyp@this}\hyperref[\edk@hyp@that]{##1}}%
+  \else
+    \def\edk@hyp@make##1{##1}%
+  \fi
   \@edk@named@false
   \sbox\edk@header{\edk@number.~}%
   \leftskip\dimexpr\edk@leftskip+\edk@depth\alterindent+\wd\edk@header\relax
-  \indent\llap{\box\edk@header}}  
+  \indent\edk@hyp@make{\llap{\box\edk@header}}}
 \makeatother

@@ -51,8 +51,8 @@
 	\ for dichotomous identification keys}
 \author{\zh{杨宇昌} (Yuchang \textsc{Yang})%	
 	\footnote{Email address: \url{yang.yc.allium@gmail.com}.}}
-\date{July \nth{14}, 2020\qquad ver.~2.00}
-
+\date{August \nth{31}, 2020\qquad ver.~2.01y}
+\hypersetup{hidelinks}
 \frenchspacing
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -127,7 +127,9 @@ Here a simple demo is presented, showing how to use the package \pkgname{edichok
 
 A larger example key containing 107 \textit{Allium} species is provided separatedly in the package as file \texttt{edichokey-ex.tex}, which was taken almost verbatim from \textit{Flora of North America} (see the file for full citation; reusable under CC BY license\footnote{Re-use terms of FNA: \url{http://beta.floranorthamerica.org/Copyright}.}), except that the two branches at the base (led by alternatives with number 1) were exchanged (but its meaning stayed the same). This example, in the given order, cannot be constructed with \pkgname{dichokey}. 
 
-Apart from the modification on the algorithm, \pkgname{edichokey} behaves differently from \pkgname{dichokey} in two more aspects: 
+A package option named $hyperref$ is provided to make the output key easier to use on electronic devices (type $\string\usepackage[hyperref]\{edichokey\}$ instead). When this option is loaded, every alternative will link to its conjugate one by clicking the number, however, the source needs to be compiled twice.
+
+Apart from the mentioned modifications, \pkgname{edichokey} behaves differently from \pkgname{dichokey} in two more aspects: 
 {\parskip-5pt 
 \begin{itemize}
 	\parskip0pt\itemsep2pt
@@ -135,12 +137,15 @@ Apart from the modification on the algorithm, \pkgname{edichokey} behaves differ
 	\item All alternatives (maybe with following dots) are wrapped at $\string\righttaxonskip$ length (by default $2em$) from the right margin, leaving only the keyed out taxa reaching the true right boundary.
 \end{itemize}}
 
+
 \section{Change history}
 
 \begingroup
 \parskip=0pt
 \parindent=0pt
 \begin{description}[style=nextline]
+	\item[ver. 2.01y (2020.8.31)]
+		Package option $hyperref$ added.
 	\item[ver. 2.00 (2020.7.14)] 
 		Package renamed as \pkgname{edichokey}. \\
 		Documentation in English finished. \\
